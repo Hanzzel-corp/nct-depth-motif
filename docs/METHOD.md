@@ -27,9 +27,9 @@ RGB (opcional) + Depth → Superficie 3D P(X,Y,Z)
 
 Cálculo de componentes direccionales:
 
-- **Sx**: Laplaciano en dirección X de la superficie
-- **Sy**: Laplaciano en dirección Y de la superficie
-- **Sz**: Laplaciano en dirección Z de la superficie
+- **Sx**: Gradiente direccional en X (primera derivada espacial)
+- **Sy**: Gradiente direccional en Y (primera derivada espacial)
+- **Sz**: Laplaciano local (segunda derivada, curvatura escalar)
 
 ### 3. Discretización de Estados
 

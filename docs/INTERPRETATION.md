@@ -86,8 +86,8 @@ La magnitud exacta depende del shrinkage y del tamaño de muestra, introduciendo
 ### Contextualización
 
 ```
-Efecto NCT:   +0.004 en AUC  (p < 0.01)
-Efecto Canny: +0.150 en AUC  (estimado, no medido directamente)
+Efecto NCT vs random:    +0.004 en AUC  (p < 0.01)
+Efecto vs Canny/Sobel:   NO MEDIDO en este trabajo (pendiente)
 ```
 
 **Veredicto**:

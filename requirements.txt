@@ -2,3 +2,9 @@ numpy>=1.24
 pillow>=10.0
 scipy>=1.11
 torch>=2.0
+
+# Nota: Para regenerar scenes_auto.csv desde RGB (clustering k-means):
+#   scikit-learn>=1.3
+#   matplotlib>=3.7
+# El archivo scenes_auto.csv ya está generado en results/,
+# por lo que estas dependencias son opcionales para reproducción.

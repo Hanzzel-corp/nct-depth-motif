@@ -52,7 +52,7 @@ Mantener el nombre "NCT" en este reporte es decisión personal: es la marca inte
 **Equivalencias conocidas**:
 - Los descriptores NCT son variantes de descriptores de curvatura local
 - La cuantización es similar a LBP (Local Binary Patterns) en 3D
-- El gate de ambigüedad es una forma de attention mechanism
+- El gate de ambigüedad funciona como un mecanismo de supresión selectiva (similar en espíritu a un attention mechanism, aunque mucho más simple)
 
 ---
 
@@ -83,4 +83,4 @@ Este proyecto adopta principios de:
 
 ## Reconocimientos
 
-El método final es el resultado de **descartar más del 80%** de las ideas originales. Este proceso de "pruning agresivo" fue crucial para llegar a un sistema que realmente funciona en datos reales.
+El método final es el resultado de un proceso iterativo de "pruning agresivo" donde la mayoría de las ideas originales (incluyendo operaciones binarias, aplicaciones a física unificada y AGI) fueron descartadas tras no mostrar señal empírica. Este proceso fue crucial para llegar a un sistema que realmente funciona en datos reales.

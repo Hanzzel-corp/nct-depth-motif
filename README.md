@@ -244,40 +244,61 @@ src/
 
 ## Comandos de reproducción
 
-### Paso 1: Verificar emparejamiento RGB-Depth
+### Paso 1: Verificar estructura del dataset
 ```bash
-python3 src/motif_survival_grouped.py \
-  --depth ./dataset/depth \
-  --diagnose-rgb-match
+ls dataset/rgb | head -5
+ls dataset/depth | head -5
+python3 -c "from PIL import Image; import numpy as np; arr=np.array(Image.open('dataset/depth/000001.png')); print('shape:', arr.shape, 'dtype:', arr.dtype, 'range:', arr.min(), '-', arr.max())"
 ```
 
 ### Paso 2: Ejecutar validación grouped split (30 runs, ~1 hora GPU)
+
+Usando los valores reportados en la tabla (3 alphas × 10 seeds):
+
 ```bash
 python3 src/motif_survival_grouped.py \
   --depth ./dataset/depth \
   --target combined \
-  --alpha 0.03 \
+  --alpha 0.02,0.03,0.04 \
   --seeds 11,22,33,44,55,66,77,88,99,111 \
   --random-baselines 256 \
   --device cuda \
   --split-mode grouped \
   --group-strategy numeric_block \
-  --group-size 50
+  --group-size 50 \
+  --depth-scale 1000 \
+  --fx 518.8579 --fy 519.4696 --cx 325.5824 --cy 253.7362
 ```
 
 ### Paso 3: Ejecutar validación scene LOO (24 runs, ~2-3 horas GPU)
+
+Usando los valores reportados en la tabla (3 alphas × 8 clusters):
+
 ```bash
 python3 src/motif_survival_scene_loo.py \
   --depth ./dataset/depth \
   --target combined \
-  --alpha 0.03 \
+  --alpha 0.02,0.03,0.04 \
   --seeds 11,22,33 \
   --random-baselines 256 \
   --device cuda \
   --split-mode scene_loo \
   --scene-map ./results/scenes_auto.csv \
   --depth-scale 1000 \
-  --max-size 160
+  --max-size 160 \
+  --fx 518.8579 --fy 519.4696 --cx 325.5824 --cy 253.7362
+```
+
+### Alternativa: Usar scripts de ejemplo
+
+Para una ejecución más simple usando los scripts preconfigurados:
+
+```bash
+# Grouped split (30 runs)
+bash examples/run_grouped_split.sh
+
+# Scene LOO (24 runs)
+bash examples/run_scene_loo.sh
 ```
 
 ---

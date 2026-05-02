@@ -12,7 +12,7 @@ Pasos para reproducir los resultados reportados en el README.
 |------------|--------|-------------|
 | CPU | 4 cores | 8+ cores |
 | RAM | 8 GB | 16 GB |
-| GPU | No requerida | CUDA-capable (acelera ~38x: de ~38h a ~1h) |
+| GPU | No requerida | CUDA-capable (acelera significativamente, observado ~1h con GPU vs decenas de horas en CPU en hardware modesto) |
 | Almacenamiento | 10 GB | 50 GB (dataset completo) |
 | Python | 3.9+ | 3.10+ |
 | OS | Linux/macOS/Windows | Ubuntu 20.04+ |
