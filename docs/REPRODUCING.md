@@ -85,7 +85,7 @@ Ver [`dataset/README.md`](../dataset/README.md) para solución de problemas.
 
 ### Opción A: Grouped Split (30 runs)
 
-**Tiempo estimado**: ~1 hora (GPU) / ~38 horas (CPU)
+**Tiempo estimado**: ~1 hora (GPU) / muchas horas en CPU (~30-40h en hardware modesto)
 
 ```bash
 bash examples/run_grouped_split.sh
@@ -100,7 +100,7 @@ bash examples/run_grouped_split.sh
 
 ### Opción B: Scene Leave-One-Out (24 runs)
 
-**Tiempo estimado**: ~2-3 horas (GPU) / ~80+ horas (CPU)
+**Tiempo estimado**: ~2-3 horas (GPU) / decenas de horas en CPU
 
 ```bash
 bash examples/run_scene_loo.sh

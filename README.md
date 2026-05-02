@@ -107,33 +107,29 @@ permutados al azar (la asociación motivo → ruptura es ruido).
 3 alphas × 10 seeds, bloques de 50 frames consecutivos, 654 frames 
 de NYU Depth V2 test set, 256 random baselines:
 
-| Modelo | p_F1 | p_AUC | p_Spearman | < 0.05 en |
-|---|---|---|---|---|
-| `motif_survival` | 0.0039 | 0.0079 | 0.0039 | 30/30 |
-| `motif_survival_binary` | 0.0039 | 0.0039 | 0.0039 | 30/30 |
-| `motif_survival_pos_only` | 0.0042 | 0.0926 | 0.0525 | F1 30/30, AUC 1/30 |
-| `motif_survival_neg_only` | 0.1540 | 0.2432 | 0.0660 | 0/30 |
-
-ΔAUC vs random: +0.0038 (motif_survival), +0.0070 (binary).
-ΔF1 vs random: +0.0052 (motif_survival), +0.0054 (binary).
+| Modelo | p_F1 | p_AUC | p_Spearman | < 0.05 en | ΔAUC vs random | ΔF1 vs random |
+|---|---|---|---|---|---|---|
+| `motif_survival` | 0.0039 | 0.0079 | 0.0039 | 30/30 | +0.0038 | +0.0052 |
+| `motif_survival_binary` | 0.0039 | 0.0039 | 0.0039 | 30/30 | **+0.0070** | **+0.0054** |
+| `motif_survival_pos_only` | 0.0042 | 0.0926 | 0.0525 | F1 30/30, AUC 1/30 | +0.0024 | +0.0042 |
+| `motif_survival_neg_only` | 0.1540 | 0.2432 | 0.0660 | 0/30 | +0.0015 | +0.0013 |
 
 ### Leave-one-cluster-out (24 runs)
 
 3 alphas × 8 clusters de RGB (k-means con confianza media 0.21), 
 654 frames, 256 random baselines:
 
-| Modelo | p_F1 | p_AUC | p_Spearman | < 0.05 en |
-|---|---|---|---|---|
-| `motif_survival` | 0.0087 | 0.0168 | 0.0084 | 24/24 |
-| `motif_survival_binary` | 0.0090 | 0.0078 | 0.0078 | 24/24 |
+| Modelo | p_F1 | p_AUC | p_Spearman | < 0.05 en | ΔAUC vs random | ΔF1 vs random |
+|---|---|---|---|---|---|---|
+| `motif_survival` | 0.0087 | 0.0168 | 0.0084 | 24/24 | +0.0038 | +0.0052 |
+| `motif_survival_binary` | 0.0090 | 0.0078 | 0.0078 | 24/24 | **+0.0071** | **+0.0054** |
 
-ΔAUC vs random: +0.0038. ΔF1 vs random: +0.0052. Magnitud estable 
-entre clusters (rango +0.0034 a +0.0043).
+Magnitud estable entre clusters (rango +0.0034 a +0.0043).
 
-### Top motivos estables
+### Top motivos estables (experiment grouped split)
 
 Los motivos con mayor lift y menor varianza entre splits 
-independientes:
+independientes (datos del experimento grouped split):
 
 | ID | Motivo (Sx,Sy,Sz) | Weight (mean ± std) | Lift | Aparece en |
 |---|---|---|---|---|
@@ -209,13 +205,40 @@ cd nct-depth-motif
 pip install -r requirements.txt
 ```
 
+### Estructura del repositorio
+
+```
+.
+├── src/                          # Código fuente principal
+│   ├── motif_survival_grouped.py
+│   └── motif_survival_scene_loo.py
+├── examples/                     # Scripts de ejemplo
+│   ├── run_grouped_split.sh
+│   └── run_scene_loo.sh
+├── results/                      # Resultados de referencia
+│   ├── grouped_split_30runs_summary.csv
+│   ├── scene_loo_24runs_summary.csv
+│   └── scenes_auto.csv
+├── docs/                         # Documentación
+│   ├── METHOD.md
+│   ├── INTERPRETATION.md
+│   ├── HISTORY.md
+│   └── en/
+├── dataset/                      # Dataset (NO incluido)
+│   ├── README.md
+│   └── .gitkeep
+├── README.md
+├── LICENSE
+└── requirements.txt
+```
+
 ### Bajar dataset
 
-NYU Depth V2 desde el sitio oficial:
-https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html
+⚠️ **El dataset NYU Depth V2 NO está incluido.** Descargarlo desde la fuente oficial y colocar los archivos en `dataset/`:
 
-Estructura esperada:
+NYU Depth V2 Labeled: https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html (~2.8GB)
 
+Estructura esperada en `dataset/`:
 ```
 dataset/
 ├── rgb/
@@ -226,19 +249,7 @@ dataset/
     ├── 000001.png
     ├── 000002.png
     └── ... (1449 mapas de profundidad)
-
-results/
-├── grouped_split_30runs_summary.csv
-├── scene_loo_24runs_summary.csv
-├── top_motifs_grouped.csv
-└── top_motifs_scene_loo.csv
-
-src/
-├── motif_survival_grouped.py
-└── motif_survival_scene_loo.py
 ```
-
-⚠️ **Data policy:** El dataset NYU Depth V2 **no está incluido** en el repositorio. Descargarlo desde la fuente oficial y colocar los archivos RGB/depth en `dataset/rgb` y `dataset/depth`.
 
 ---
 
@@ -272,14 +283,13 @@ python3 src/motif_survival_grouped.py \
 
 ### Paso 3: Ejecutar validación scene LOO (24 runs, ~2-3 horas GPU)
 
-Usando los valores reportados en la tabla (3 alphas × 8 clusters):
+En modo scene_loo: 3 alphas × 8 clusters = 24 runs. Las seeds no multiplican runs en este modo porque los splits están determinados por los clusters del CSV.
 
 ```bash
 python3 src/motif_survival_scene_loo.py \
   --depth ./dataset/depth \
   --target combined \
   --alpha 0.02,0.03,0.04 \
-  --seeds 11,22,33 \
   --random-baselines 256 \
   --device cuda \
   --split-mode scene_loo \
@@ -303,13 +313,4 @@ bash examples/run_scene_loo.sh
 
 ---
 
-## Tabla resumen de resultados
-
-| Modelo | ΔAUC vs random | ΔF1 vs random | p(AUC) | p(F1) | Significativos |
-|--------|---------------|---------------|--------|-------|----------------|
-| **motif_survival_binary** | **+0.0071** | **+0.0054** | **0.0078** | **0.0090** | **24/24** |
-| motif_survival | +0.0038 | +0.0052 | 0.0168 | 0.0087 | 24/24 |
-| motif_survival_pos_only | +0.0024 | +0.0042 | 0.1105 | 0.0123 | F1 only |
-| motif_survival_neg_only | +0.0015 | +0.0013 | 0.2542 | 0.1744 | no |
-
-**Nota:** `motif_survival_binary` (solo signo +1/-1/0) supera al modelo full, confirmando que la dirección del peso es más informativa que su magnitud.
+**Nota:** En ambos experimentos, `motif_survival_binary` (solo signo +1/-1/0) supera al modelo full, confirmando que la dirección del peso es más informativa que su magnitud.
