@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+venv/
+
+# Datasets (NO subir)
+dataset/rgb/
+dataset/depth/
+*.npy
+*.h5
+*.mat
+nyu_depth_v2_labeled.mat
+
+# Resultados intermedios pesados
+*.json
+results/*.json
+9B02_*_results.json
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Notas personales
+notas_*.md
+draft_*.md
+TODO_personal.md
+
+# Logs
+*.log
