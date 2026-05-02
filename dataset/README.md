@@ -1,5 +1,8 @@
 # Dataset
 
+⚠️ **El dataset NYU Depth V2 NO está incluido en este repositorio.**  
+Debe descargarse manualmente desde la fuente oficial (ver instrucciones abajo).
+
 Esta carpeta debe contener el dataset NYU Depth V2 para ejecutar los experimentos.
 
 ## Estructura requerida

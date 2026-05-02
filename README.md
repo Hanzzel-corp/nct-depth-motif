@@ -173,8 +173,13 @@ sugiere que la representación captura estructura reproducible.
 
 3. **Cluster scenes, no semantic scenes.** Los 8 clusters de 
    leave-one-out son de k-means sobre RGB con confianza media 0.21, 
-   no las etiquetas semánticas oficiales de NYU. Validación con 
-   `scene_types.txt` oficial está pendiente.
+   no las etiquetas semánticas oficiales de NYU. 
+   
+   <!-- ![Auto scene clusters](docs/assets/scenes_auto_contact_sheet.png) -->
+   
+   *(Nota: Subir `scenes_auto_contact_sheet.png` a `docs/assets/` para visualizar los clusters RGB)*
+   
+   Validación con `scene_types.txt` oficial está pendiente.
 
 4. **Solo NYU Depth V2.** Sin validación cross-dataset (ScanNet, 
    KITTI, SUN RGB-D).
@@ -210,3 +215,80 @@ NYU Depth V2 desde el sitio oficial:
 https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html
 
 Estructura esperada:
+
+```
+dataset/
+├── rgb/
+│   ├── 000001.png
+│   ├── 000002.png
+│   └── ... (1449 imágenes RGB)
+└── depth/
+    ├── 000001.png
+    ├── 000002.png
+    └── ... (1449 mapas de profundidad)
+
+results/
+├── grouped_split_30runs_summary.csv
+├── scene_loo_24runs_summary.csv
+├── top_motifs_grouped.csv
+└── top_motifs_scene_loo.csv
+
+src/
+├── motif_survival_grouped.py
+└── motif_survival_scene_loo.py
+```
+
+⚠️ **Data policy:** El dataset NYU Depth V2 **no está incluido** en el repositorio. Descargarlo desde la fuente oficial y colocar los archivos RGB/depth en `dataset/rgb` y `dataset/depth`.
+
+---
+
+## Comandos de reproducción
+
+### Paso 1: Verificar emparejamiento RGB-Depth
+```bash
+python3 src/motif_survival_grouped.py \
+  --depth ./dataset/depth \
+  --diagnose-rgb-match
+```
+
+### Paso 2: Ejecutar validación grouped split (30 runs, ~1 hora GPU)
+```bash
+python3 src/motif_survival_grouped.py \
+  --depth ./dataset/depth \
+  --target combined \
+  --alpha 0.03 \
+  --seeds 11,22,33,44,55,66,77,88,99,111 \
+  --random-baselines 256 \
+  --device cuda \
+  --split-mode grouped \
+  --group-strategy numeric_block \
+  --group-size 50
+```
+
+### Paso 3: Ejecutar validación scene LOO (24 runs, ~2-3 horas GPU)
+```bash
+python3 src/motif_survival_scene_loo.py \
+  --depth ./dataset/depth \
+  --target combined \
+  --alpha 0.03 \
+  --seeds 11,22,33 \
+  --random-baselines 256 \
+  --device cuda \
+  --split-mode scene_loo \
+  --scene-map ./results/scenes_auto.csv \
+  --depth-scale 1000 \
+  --max-size 160
+```
+
+---
+
+## Tabla resumen de resultados
+
+| Modelo | ΔAUC vs random | ΔF1 vs random | p(AUC) | p(F1) | Significativos |
+|--------|---------------|---------------|--------|-------|----------------|
+| **motif_survival_binary** | **+0.0071** | **+0.0054** | **0.0078** | **0.0090** | **24/24** |
+| motif_survival | +0.0038 | +0.0052 | 0.0168 | 0.0087 | 24/24 |
+| motif_survival_pos_only | +0.0024 | +0.0042 | 0.1105 | 0.0123 | F1 only |
+| motif_survival_neg_only | +0.0015 | +0.0013 | 0.2542 | 0.1744 | no |
+
+**Nota:** `motif_survival_binary` (solo signo +1/-1/0) supera al modelo full, confirmando que la dirección del peso es más informativa que su magnitud.

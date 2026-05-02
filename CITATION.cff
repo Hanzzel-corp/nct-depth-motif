@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "NCT Depth Motif: Discrete Symbolic Motif Validation on Depth Maps"
+authors:
+  - family-names: "Zamora"
+    given-names: "José"
+date-released: 2026-05-01
+version: "1.0.0"
+url: "https://github.com/Hanzzel-corp/nct-depth-motif"
+repository-code: "https://github.com/Hanzzel-corp/nct-depth-motif"
+license: MIT
+abstract: "Experimental validation of a discrete symbolic representation of local depth descriptors (NCT motifs), evaluated on NYU Depth V2. Results show statistically significant signal (p < 0.01) with modest magnitude (ΔAUC ≈ +0.004 vs random)."
+keywords:
+  - "depth estimation"
+  - "edge detection"
+  - "discrete motifs"
+  - "NYU Depth V2"
+  - "computer vision"
+  - "3D descriptors"
+type: software
