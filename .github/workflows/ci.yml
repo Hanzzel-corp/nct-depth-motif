@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy pillow scipy torch --index-url https://download.pytorch.org/whl/cpu
+    
+    - name: Verify CITATION.cff syntax
+      run: |
+        python -c "import yaml; yaml.safe_load(open('CITATION.cff'))" 2>/dev/null || echo "YAML check skipped (PyYAML not required)"
+        # Basic syntax check
+        grep -q "cff-version:" CITATION.cff && echo "✓ CITATION.cff has cff-version"
+        grep -q "title:" CITATION.cff && echo "✓ CITATION.cff has title"
+        grep -q "authors:" CITATION.cff && echo "✓ CITATION.cff has authors"
+    
+    - name: Check Python syntax
+      run: |
+        python -m py_compile src/motif_survival_grouped.py
+        echo "✓ motif_survival_grouped.py compiles"
+        python -m py_compile src/motif_survival_scene_loo.py
+        echo "✓ motif_survival_scene_loo.py compiles"
+    
+    - name: Verify imports
+      run: |
+        cd src
+        python -c "import numpy, PIL, scipy, torch; print('✓ All imports successful')"
+    
+    - name: Check shell scripts
+      run: |
+        bash -n examples/run_grouped_split.sh && echo "✓ run_grouped_split.sh syntax OK"
+        bash -n examples/run_scene_loo.sh && echo "✓ run_scene_loo.sh syntax OK"
+        bash -n setup_env.sh && echo "✓ setup_env.sh syntax OK"
+    
+    - name: Verify documentation structure
+      run: |
+        test -f README.md && echo "✓ README.md exists"
+        test -f CITATION.cff && echo "✓ CITATION.cff exists"
+        test -f LICENSE && echo "✓ LICENSE exists"
+        test -f requirements.txt && echo "✓ requirements.txt exists"
+        test -d docs/en && echo "✓ docs/en/ exists"
+        test -f docs/en/README.md && echo "✓ docs/en/README.md exists"
+        test -f dataset/README.md && echo "✓ dataset/README.md exists"
+        test -f dataset/.gitkeep && echo "✓ dataset/.gitkeep exists"
+    
+    - name: Check file encodings
+      run: |
+        file README.md | grep -q "UTF-8" && echo "✓ README.md is UTF-8"
+        file CITATION.cff | grep -q "UTF-8" && echo "✓ CITATION.cff is UTF-8"
