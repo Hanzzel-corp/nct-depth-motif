@@ -10,6 +10,8 @@ Resultados estadísticamente significativos pero de magnitud chica.
 No comparado todavía contra detectores clásicos del estado del arte 
 (Canny, Sobel, HED).
 
+📄 **[English documentation available](docs/en/README.md)** — Documentación en inglés disponible en `docs/en/`
+
 ---
 
 ## Origen del proyecto
