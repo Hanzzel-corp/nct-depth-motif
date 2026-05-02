@@ -138,9 +138,9 @@ The high stability of top weights across independent splits suggests the represe
 
 3. **Cluster scenes, not semantic scenes.** The 8 leave-one-out clusters are k-means over RGB with mean confidence 0.21, not the official NYU semantic labels.
 
-   <!-- ![Auto scene clusters](../../docs/assets/scenes_auto_contact_sheet.png) -->
+   ![Auto scene clusters](../../docs/assets/scenes_auto_contact_sheet.png)
    
-   *(Note: Upload `scenes_auto_contact_sheet.png` to `docs/assets/` to visualize RGB clusters)*
+   *Contact sheet with the 8 RGB clusters generated automatically. Visual validation allows auditing that the cluster-based split is interpretable.*
    
    Validation with official `scene_types.txt` is pending.
 

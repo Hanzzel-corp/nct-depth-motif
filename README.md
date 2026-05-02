@@ -175,9 +175,9 @@ sugiere que la representación captura estructura reproducible.
    leave-one-out son de k-means sobre RGB con confianza media 0.21, 
    no las etiquetas semánticas oficiales de NYU. 
    
-   <!-- ![Auto scene clusters](docs/assets/scenes_auto_contact_sheet.png) -->
+   ![Auto scene clusters](docs/assets/scenes_auto_contact_sheet.png)
    
-   *(Nota: Subir `scenes_auto_contact_sheet.png` a `docs/assets/` para visualizar los clusters RGB)*
+   *Contact sheet con los 8 clusters RGB generados automáticamente. La validación visual permite auditar que el split por clusters es interpretable.*
    
    Validación con `scene_types.txt` oficial está pendiente.
 
