@@ -1,6 +1,8 @@
 
 # NCT — Discrete Symbolic Motif Validation on Depth Maps
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20045645.svg)](https://doi.org/10.5281/zenodo.20045645)
+
 Validación experimental de una representación simbólica discreta de 
 descriptores locales de profundidad, evaluada sobre el dataset NYU 
 Depth V2.
