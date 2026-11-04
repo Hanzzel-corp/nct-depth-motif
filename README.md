@@ -316,3 +316,11 @@ bash examples/run_scene_loo.sh
 ---
 
 **Nota:** En ambos experimentos, `motif_survival_binary` (solo signo +1/-1/0) supera al modelo full, confirmando que la dirección del peso es más informativa que su magnitud.
+
+---
+
+## Dirección de investigación y autoría
+
+**José Zamora — Investigador principal independiente (Independent Principal Investigator), Hanzzel Corp.**
+
+Este repositorio es un proyecto individual del ecosistema Hanzzel Corp. Su pertenencia al ecosistema no implica integración técnica con NCT ni validación de resultados más allá de la evidencia documentada aquí.
