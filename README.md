@@ -1,6 +1,8 @@
 
 # NCT — Discrete Symbolic Motif Validation on Depth Maps
 
+**Hanzzel Corp · documentación del proyecto:** [Ficha de NCT Depth Motif en Hanzzel Corp](https://hanzzel-corp.github.io/research/nct-depth-motif/)
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20045645.svg)](https://doi.org/10.5281/zenodo.20045645)
 
 Validación experimental de una representación simbólica discreta de 
